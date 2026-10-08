@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suez & Egypt Smart Green Command Center - Republic Competition 2026</title>
+    <style>
+        :root {
+            --bg-main: #f0fdf4;
+            --card-bg: #ffffff;
+            --primary: #064e3b;
+            --secondary: #047857;
+            --accent: #10b981;
+            --glow: rgba(16, 185, 129, 0.2);
+            --text-dark: #1f2937;
+            --text-muted: #4b5563;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            line-height: 1.9;
+            text-align: left;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #022c22, #064e3b, #047857);
+            color: white;
+            text-align: center;
+            padding: 4rem 1.5rem;
+            border-bottom: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            letter-spacing: 0.5px;
+        }
+        header p {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: #d1fae5;
+        }
+
+        /* Mission Control Live Stats */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: -2.5rem auto 2.5rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+        .metric-card {
+            background: #ffffff;
+            padding: 1.8rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #a7f3d0;
+            box-shadow: 0 10px 25px rgba(6, 78, 59, 0.08);
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        .metric-card h3 {
+            margin: 0;
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+        .metric-card p {
+            margin: 0.5rem 0 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Main Container & Rich Content Cards */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+            border-left: 8px solid var(--primary);
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        .section-card:hover {
+            box-shadow: 0 15px 45px var(--glow);
+        }
+        h2 {
+            color: var(--primary);
+            border-bottom: 3px solid #d1fae5;
+            padding-bottom: 0.8rem;
+            margin-top: 0;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        p, li {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+        }
+        ul {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Image Frame Ready for URLs */
+        .image-frame {
+            background: #f8fafc;
+            border: 3px dashed #10b981;
+            border-radius: 14px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .project-img {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 2px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        /* Floating Side Dock */
+        .side-dock {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        .dock-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: 3px solid #a7f3d0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .dock-btn:hover {
+            background: var(--accent);
+            color: #022c22;
+            transform: scale(1.15);
+            box-shadow: 0 0 30px var(--accent);
+        }
+        .dock-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 75px;
+            background: #064e3b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .dock-btn:hover::after {
+            opacity: 1;
+        }
+
+        /* Modal Overlays */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 44, 34, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+        .modal-card {
+            background: #ffffff;
+            border: 3px solid var(--accent);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 3rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: left;
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-modal:hover {
+            background: #dc2626;
+            color: white;
+            transform: scale(1.1);
+        }
+        .modal-card h3 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #d1fae5;
+            padding-bottom: 0.8rem;
+        }
+
+        /* Action Buttons & Inputs */
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(6, 78, 59, 0.2);
+        }
+        .action-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+            transition: 0.3s;
+            text-align: left;
+        }
+        .form-input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 10px var(--glow);
+        }
+
+        /* Chatbot Screen */
+        .chat-screen {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.5rem;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .chat-options {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        /* Printable Certificates */
+        .certificate-box {
+            display: none;
+            background: #ffffff;
+            color: #064e3b;
+            border: 10px double #064e3b;
+            border-radius: 20px;
+            padding: 3.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .certificate-box h4 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Georgia', serif;
+        }
+        .cert-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            display: inline-block;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            .certificate-box, .certificate-box * { visibility: visible; }
+            .certificate-box {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: 12px double #064e3b;
+                box-shadow: none;
+                margin: 0;
+            }
+            .close-modal, .action-btn { display: none; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background: #022c22;
+            color: #d1fae5;
+            margin-top: 5rem;
+            border-top: 4px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⚡ Suez & Egypt Smart Green Command Center</h1>
+        <p>Advanced National Platform Documenting Sustainable Development, Green Computing & Vision 2030 Initiatives</p>
+    </header>
+
+    <!-- Mission Control Live Stats Bar -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <h3>4.8 GW</h3>
+            <p>Clean Energy Capacity</p>
+        </div>
+        <div class="metric-card">
+            <h3>1.2M Tons</h3>
+            <p>Annual CO₂ Emissions Reduced</p>
+        </div>
+        <div class="metric-card">
+            <h3>100%</h3>
+            <p>Circular Economy Compliance</p>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- Section 1: Core Concepts -->
+        <div class="section-card">
+            <h2>🌍 Core Concepts: Green Technology & Sustainable Computing</h2>
+            <p><strong>What is Green Technology (Clean Tech)?</strong> The systematic application of modern environmental sciences, green chemistry, and advanced digital innovations to conserve natural resources and protect ecosystems while radically reducing the negative impacts of industrial activities on global climate.</p>
+            
+            <p><strong>Strategic Pillars of Green Technology:</strong></p>
+            <ul>
+                <li><strong>Renewable Energy Integration:</strong> Replacing fossil fuels entirely with clean, inexhaustible sources (wind power, photovoltaic solar cells, and green hydrogen projects).</li>
+                <li><strong>Resource & Energy Efficiency:</strong> Engineering smart systems, intelligent buildings, and digital infrastructure that consume minimal electricity while maximizing output.</li>
+                <li><strong>Circular Economy & Waste Management:</strong> Activating recycling loops to minimize electronic waste (e-waste) and plastics, transforming waste into usable resources.</li>
+            </ul>
+
+            <p><strong>What is Green Computing?</strong> The environmentally responsible practice of designing, manufacturing, utilizing, and operating computers, servers, and data centers with the lowest carbon footprint and highest energy efficiency throughout their lifecycles.</p>
+
+            <!-- IMAGE SLOT 1 -->
+            <div class="image-frame">
+                <p style="margin: 0 0 10px 0; font-weight: bold; color: var(--primary);"></p>
+                <img src="https://images.unsplash.com/photo-1779275397116-231d5e92325e?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTE0NTY1NTN8&ixlib=rb-4.1.0&q=85" alt="Green Technology Concept" class="project-img">
+            </div>
+        </div>
+
+        <!-- Section 2: Suez Mega Projects -->
+        <div class="section-card">
+            <h2>📍 Suez Governorate Mega Projects & Future Infrastructure</h2>
+            <p>Suez holds a vital geographic and economic strategic position, making it the primary locomotive for Egypt's green revolution:</p>
+            <ul>
+                <li><strong>Ain Sokhna Green Hydrogen Project:</strong> A world-class hub utilizing water electrolysis powered by wind and solar energy to produce clean green fuel for local and global markets.</li>
+                <li><strong>Smart Desalination Plants:</strong> Advanced water treatment facilities utilizing Internet of Things (IoT) sensors and AI algorithms to manage water security efficiently.</li>
+                <li><strong>Gulf of Suez Wind Farms:</strong> Capitalizing on high-speed natural wind corridors to generate massive quantities of zero-emission clean electricity.</li>
+            </ul>
+
+            <!-- IMAGE SLOT 2 -->
+            <div class="image-frame">
+                <p style="margin: 0 0 10px 0; font-weight: bold; color: var(--primary);"></p>
+                <img src="https://images.unsplash.com/photo-1509007358040-b28943f5192a?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTE0NTU5OTF8&ixlib=rb-4.1.0&q=85" alt="Suez Green Project" class="project-img">
+            </div>
+        </div>
+
+        <!-- Section 3: National Egyptian Green Vision -->
+        <div class="section-card">
+            <h2>🇪🇬 National Mega Projects & Egypt Vision 2030 (Including Green Sharm)</h2>
+            <p>Egypt is leading an unprecedented developmental transformation by executing mega projects with deep environmental and sustainable dimensions:</p>
+            <ul>
+                <li><strong>Benban Solar Park (Aswan):</strong> One of the world's largest photovoltaic installations, embodying Egypt's leadership in clean solar energy deployment.</li>
+                <li><strong>Green Sharm Project:</strong> A pioneering Ministry of Environment initiative transforming Sharm El-Sheikh into a global eco-tourism hub enforcing strict single-use plastic bans.</li>
+                <li><strong>Green Electric Mass Transit:</strong> Operating Monorail and Light Rail Transit (LRT) networks to drastically reduce urban traffic emissions.</li>
+                <li><strong>The New Administrative Capital:</strong> Egypt's pioneer smart green city designed under strict environmental sustainability standards and intelligent waste management.</li>
+            </ul>
+
+            <!-- IMAGE SLOT 3 -->
+            <div class="image-frame">
+                <p style="margin: 0 0 10px 0; font-weight: bold; color: var(--primary);"></p>
+                <img src="https://images.unsplash.com/photo-1785758849019-6a6c74c5ee3d?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTE0NTYyNzh8&ixlib=rb-4.1.0&q=85" alt="Benban Solar Park & Green Sharm" class="project-img">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Floating Side Dock (Interactive Tools) -->
+    <div class="side-dock">
+        <div class="dock-btn" data-tooltip="Eco-AI Assistant" onclick="openModal('chatModal')">🤖</div>
+        <div class="dock-btn" data-tooltip="E-Waste Sorting Challenge (10 Items)" onclick="openModal('sortModal')">♻️</div>
+        <div class="dock-btn" data-tooltip="Carbon Footprint Calculator" onclick="openModal('calcModal')">🧮</div>
+        <div class="dock-btn" data-tooltip="Quiz & Official Certificate" onclick="openModal('quizModal')">🏆</div>
+    </div>
+
+    <!-- Modal 1: Chatbot Terminal -->
+    <div id="chatModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal" onclick="closeModal('chatModal')">×</button>
+            <h3>🤖 Eco-AI Assistant Terminal</h3>
+            <p>Query our smart green database about technologies and Suez projects:</p>
+            <div id="chatScreen" class="chat-screen">Eco-AI: Welcome Command Commander! Click any prompt below to review scientific insights...</div>
+            <div class="chat-options">
+                <button class="action-btn" onclick="askBot('hydrogen')">What is Green Hydrogen?</button>
+                <button class="action-btn" onclick="askBot('suez')">Suez Governorate Role?</button>
+                <button class="action-btn" onclick="askBot('computing')">What is Green Computing?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: E-Waste Sorting Challenge & Certificate -->
+    <div id="sortModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal" onclick="closeModal('sortModal')">×</button>
+            <h3>♻️ E-Waste & Recycling Master Challenge (10 Items)</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 1.5rem;"><strong>Sorting Rules:</strong> E-Waste bin for electronics and batteries, Plastic bin for containers, Organic bin for food scraps.</p>
+            
+            <div id="sortItemBox" style="font-size: 1.3rem; font-weight: bold; color: var(--primary); margin-bottom: 1.2rem; text-align: center;">
+                Item 1/10: Damaged Old Desktop Computer
+            </div>
+            <div class="chat-options" style="justify-content: center; margin-bottom: 1rem;">
+                <button class="action-btn" onclick="sortItem('ewaste')">E-Waste Bin</button>
+                <button class="action-btn" onclick="sortItem('plastic')">Plastic Bin</button>
+                <button class="action-btn" onclick="sortItem('organic')">Organic Bin</button>
+            </div>
+            <div id="sortStatus" style="font-weight: bold; color: var(--text-muted); text-align: center; font-size: 1.1rem;">Score: 0 / 100 points</div>
+
+            <!-- Printable Recycling Master Certificate -->
+            <div class="certificate-box" id="recyclingCert">
+                <h4>🏆 Official Recycling & E-Waste Master Certificate 🏆</h4>
+                <p>This official certificate is proudly presented to <br><strong id="recWinnerName" style="font-size: 1.8rem; text-decoration: underline;">[User Name]</strong><br> for successfully completing the smart sorting challenge with 100 points and exceptional expertise!</p>
+                <div class="cert-badge">Certified Recycling Expert - 2026 🌿</div>
+                <br><br>
+                <button class="action-btn" onclick="window.print()">🖨️ Print Official Certificate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Carbon Footprint Calculator -->
+    <div id="calcModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal" onclick="closeModal('calcModal')">×</button>
+            <h3>🧮 Interactive Carbon Footprint Calculator</h3>
+            <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Daily electronic devices usage hours:</label>
+            <input type="number" id="calcHours" class="form-input" placeholder="Example: 6" min="1" max="24">
+            
+            <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Primary transportation method:</label>
+            <select id="calcTransport" class="form-input">
+                <option value="car">Fuel Car (High Carbon Emissions)</option>
+                <option value="bus">Public Bus / Mass Transit</option>
+                <option value="walk">Walking / Cycling / Sustainable Transport 🌿</option>
+            </select>
+
+            <button class="action-btn" style="width:100%;" onclick="calculateCarbon()">Calculate Footprint & Get Solutions 🚀</button>
+            <div id="calcResult" style="margin-top:1.5rem; padding:1.2rem; background:#f0fdf4; border-left:4px solid var(--accent); border-radius:10px; display:none; font-size:1.05rem;"></div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Quiz & Official Certificate -->
+    <div id="quizModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal" onclick="closeModal('quizModal')">×</button>
+            <h3>🏆 Final Competition Quiz & Official Certificate</h3>
+            
+            <div id="quizNameBox">
+                <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Enter your full name for the official authenticated certificate:</label>
+                <input type="text" id="participantNameInput" class="form-input" placeholder="e.g., Doaa Ahmed">
+                <button class="action-btn" style="width:100%;" onclick="startQuiz()">Start Comprehensive Quiz (10 Questions) 🚀</button>
+            </div>
+
+            <div id="quizContainer" style="display:none;">
+                <div id="qText" style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1.2rem; color: var(--primary);">Question...</div>
+                <div id="qOptions" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+            </div>
+
+            <!-- Main Official Certificate -->
+            <div class="certificate-box" id="mainCert">
+                <h4>🌟 Official Excellence Certificate in Green Technology 🌟</h4>
+                <p>The Republic Competition Committee officially certifies that <br><strong id="certifiedWinnerName" style="font-size: 2rem; text-decoration: underline;">[User Name]</strong><br> has successfully passed the Smart Command Center quiz with top honors and secured First Place!</p>
+                <div class="cert-badge">Certified Eco-Commander - 2026 🥇</div>
+                <br><br>
+                <button class="action-btn" onclick="window.print()">🖨️ Print Official Luxury Certificate</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Suez & Egypt Smart Green Command Center | Designed for Arab Republic of Egypt Competition Excellence 🌟</p>
+    </footer>
+
+    <script>
+        // Modal Toggles
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Chatbot Logic
+        function askBot(topic) {
+            const screen = document.getElementById('chatScreen');
+            if(topic === 'hydrogen') {
+                screen.innerHTML = "Eco-AI: Green hydrogen is a clean future fuel produced by splitting water using renewable electricity (wind/solar) with zero carbon emissions.";
+            } else if(topic === 'suez') {
+                screen.innerHTML = "Eco-AI: Suez Governorate leads Egypt's green revolution through Ain Sokhna hydrogen mega plants and massive wind energy farms.";
+            } else if(topic === 'computing') {
+                screen.innerHTML = "Eco-AI: Green computing focuses on server energy efficiency, hardware lifespan extension, and scientific e-waste recycling.";
+            }
+        }
+
+        // Sorting Challenge Logic (10 Items)
+        const sortingData = [
+            { name: "1. Damaged Old Desktop Computer", correct: "ewaste" },
+            { name: "2. Empty Plastic Water Bottle", correct: "plastic" },
+            { name: "3. Organic Fruit and Vegetable Peels", correct: "organic" },
+            { name: "4. Expired Damaged Smartphone Battery", correct: "ewaste" },
+            { name: "5. Recyclable Plastic Shampoo Container", correct: "plastic" },
+            { name: "6. Food Scraps & Fresh Plant Leaves", correct: "organic" },
+            { name: "7. Broken Electronic Circuit Board", correct: "ewaste" },
+            { name: "8. Single-Use Plastic Shopping Bags", correct: "plastic" },
+            { name: "9. Eggshells and Ground Coffee Grounds", correct: "organic" },
+            { name: "10. Damaged and Cut USB Charger Cable", correct: "ewaste" }
+        ];
+        let sortIdx = 0;
+        let sortScore = 0;
+
+        function sortItem(bin) {
+            if(sortIdx >= sortingData.length) return;
+            const current = sortingData[sortIdx];
+            const status = document.getElementById('sortStatus');
+            const container = document.getElementById('sortItemBox');
+
+            if(bin === current.correct) {
+                sortScore += 10;
+                status.innerHTML = `✅ Correct! Current Score: ${sortScore} / 100 points`;
+            } else {
+                status.innerHTML = `❌ Incorrect! The appropriate bin is: ${current.correct.toUpperCase()}`;
+            }
+
+            sortIdx++;
+            if(sortIdx < sortingData.length) {
+                setTimeout(() => {
+                    container.innerHTML = `Item ${sortIdx + 1}/10: ${sortingData[sortIdx].name}`;
+                }, 700);
+            } else {
+                if(sortScore >= 100) {
+                    let name = prompt("Congratulations! You scored 100 points. Enter your name for the Recycling Expert Certificate:", "Doaa Ahmed");
+                    if(!name) name = "Doaa Ahmed";
+                    document.getElementById('recWinnerName').textContent = name;
+                    document.getElementById('recyclingCert').style.display = 'block';
+                    container.innerHTML = "🎉 Sorting challenge completed successfully with top honors!";
+                } else {
+                    container.innerHTML = `Challenge completed! Total Score: ${sortScore} / 100`;
+                }
+            }
+        }
+
+        // Carbon Calculator Logic
+        function calculateCarbon() {
+            const hours = document.getElementById('calcHours').value;
+            const trans = document.getElementById('calcTransport').value;
+            const res = document.getElementById('calcResult');
+
+            if(!hours || hours <= 0) {
+                alert('Please enter valid usage hours.');
+                return;
+            }
+
+            let footprint = hours * 0.15;
+            let tip = "";
+            if(trans === 'car') {
+                footprint += 3.5;
+                tip = "💡 <strong>Eco-Tip:</strong> Private car emissions are high. Consider shifting to mass transit or electric green mobility.";
+            } else if(trans === 'bus') {
+                footprint += 1.2;
+                tip = "💡 <strong>Eco-Tip:</strong> Excellent! Using public mass transit effectively reduces personal carbon footprints.";
+            } else {
+                footprint += 0.2;
+                tip = "🌿 <strong>You're an Eco-Champion!</strong> Your sustainable transport choice preserves Suez's clean environment.";
+            }
+
+            res.style.display = 'block';
+            res.innerHTML = `📊 Estimated Daily Carbon Footprint: <strong>${footprint.toFixed(2)} kg CO₂ equivalents</strong><br><br>${tip}`;
+        }
+
+        // Quiz Logic (10 Questions)
+        let participant = "";
+        let qIndex = 0;
+        let qScore = 0;
+        const questionsList = [
+            { q: "1. What is the primary goal of utilizing Green Technology?", options: ["Increasing fossil fuel consumption", "Conserving natural resources and protecting the environment", "Producing additional plastic waste", "Maximizing electricity consumption without limits"], correct: 1 },
+            { q: "2. Which Egyptian governorate is the pioneer in major green hydrogen projects?", options: ["Suez Governorate (Ain Sokhna)", "Aswan Governorate", "Alexandria Governorate", "Matrouh Governorate"], correct: 0 },
+            { q: "3. What do 'Green Computing' practices focus on?", options: ["Leaving computers running continuously", "Energy efficiency and electronic waste recycling", "Using toxic lead-acid batteries", "Increasing thermal loads on servers"], correct: 1 },
+            { q: "4. Where is the mega Benban Solar Park located?", options: ["Suez Governorate", "Aswan Governorate", "Giza Governorate", "Ismailia Governorate"], correct: 1 },
+            { q: "5. What is the prominent and active natural energy source in the Gulf of Suez?", options: ["Geothermal energy", "High-speed wind energy corridors", "Tidal waves", "Coal power"], correct: 1 },
+            { q: "6. What is the name of Egypt's strategic roadmap for sustainable development?", options: ["Egypt Vision 2050", "Egypt Vision 2030", "Egypt Vision 2040", "Egypt Vision 2100"], correct: 1 },
+            { q: "7. How does Artificial Intelligence support green technology sectors?", options: ["By consuming additional power", "By optimizing smart grids and monitoring emissions in real-time", "By permanently shutting down computers", "By printing intensive paper reports"], correct: 1 },
+            { q: "8. What is the major environmental advantage of electric mass transit networks?", options: ["Increasing urban traffic exhaust", "Reducing urban traffic emissions and providing clean transit", "Increasing traffic congestion", "Relying on diesel fuel"], correct: 1 },
+            { q: "9. What is a core fundamental pillar of the Circular Economy concept?", options: ["Random waste disposal", "Reduce, Reuse, and Recycle", "Open waste burning", "Single-use plastics reliance"], correct: 1 },
+            { q: "10. What is the strategic objective of the 'Green Sharm' initiative?", options: ["Transforming it into a fully sustainable eco-tourism city", "Building massive chemical factories", "Canceling tourism activity", "Increasing reliance on traditional fossil fuels"], correct: 0 }
+        ];
+
+        function startQuiz() {
+            const name = document.getElementById('participantNameInput').value.trim();
+            if(!name) {
+                alert('Please enter your full name to receive your certificate.');
+                return;
+            }
+            participant = name;
+            document.getElementById('quizNameBox').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if(qIndex >= questionsList.length) {
+                document.getElementById('quizContainer').style.display = 'none';
+                document.getElementById('certifiedWinnerName').textContent = participant;
+                document.getElementById('mainCert').style.display = 'block';
+                return;
+            }
+
+            const currentQ = questionsList[qIndex];
+            document.getElementById('qText').textContent = currentQ.q;
+            const optionsDiv = document.getElementById('qOptions');
+            optionsDiv.innerHTML = '';
+
+            currentQ.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'action-btn';
+                btn.style.textAlign = 'left';
+                btn.style.background = '#ffffff';
+                btn.style.color = 'var(--primary)';
+                btn.style.border = '2px solid #a7f3d0';
+                btn.textContent = opt;
+                btn.onclick = () => selectQuizAnswer(idx, currentQ.correct);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selected, correct) {
+            if(selected === correct) qScore++;
+            qIndex++;
+            setTimeout(() => {
+                loadQuizQuestion();
+            }, 600);
+        }
+    </script>
+</body>
+</html>
